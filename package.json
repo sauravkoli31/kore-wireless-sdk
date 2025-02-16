@@ -1,6 +1,6 @@
 {
   "name": "kore-wireless-sdk",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "SDK for KORE Wireless APIs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
