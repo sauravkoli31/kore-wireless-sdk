@@ -1,0 +1,31 @@
+{
+  "name": "kore-wireless-api-sdk",
+  "version": "1.0.0",
+  "description": "NodeJS SDK for KORE Wireless API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "kore",
+    "wireless",
+    "api",
+    "sdk",
+    "kore-wireless-api-sdk",
+    "kore-api-sdk",
+    "kore-wireless-sdk"
+  ],
+  "author": "Saurav Koli",
+  "email": "sauravkoli3105@gmail.com",
+  "homepage": "https://github.com/sauravkoli31/kore-wireless-sdk",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
