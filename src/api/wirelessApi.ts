@@ -1,7 +1,6 @@
 import {
   UsageList,
   SIMUsageList,
-  UsageApiErrorResponse,
   PaginationParams,
   Granularity,
   RatePlan,
@@ -15,7 +14,6 @@ import {
   CommandDirection,
   CommandTransport,
   RequestOptions,
-  ApiError
 } from '../types/wireless';
 import { BaseApi } from './baseApi';
 import { RateLimiter } from '../utils/rateLimiter';
@@ -44,7 +42,7 @@ export class WirelessApi extends BaseApi {
   }
 
   protected async request<T>(options: RequestOptions): Promise<T> {
-    return this.rateLimiter.add(() => 
+    return await this.rateLimiter.add(() => 
       retry(() => super.request<T>(options), this.retryOptions)
     );
   }
@@ -66,7 +64,8 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'GET',
       path: '/UsageRecords',
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 
@@ -89,17 +88,19 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'GET',
       path: `/Sims/${sid}/UsageRecords`,
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 
   // Rate Plans API
   async listRatePlans(params: PaginationParams = {}): Promise<{ rate_plans: RatePlan[]; meta: any }> {
     const queryParams = this.buildPaginationParams(params);
-    return this.request({
+    return await this.request({
       method: 'GET',
       path: '/RatePlans',
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 
@@ -115,7 +116,8 @@ export class WirelessApi extends BaseApi {
   async getRatePlan(sid: string): Promise<RatePlan> {
     return this.request({
       method: 'GET',
-      path: `/RatePlans/${sid}`
+      path: `/RatePlans/${sid}`,
+      expectedStatus: [200]
     });
   }
 
@@ -123,7 +125,8 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'POST',
       path: `/RatePlans/${sid}`,
-      body: data
+      body: data as Record<string, unknown>,
+      expectedStatus: [200]
     });
   }
 
@@ -156,14 +159,16 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'GET',
       path: '/Sims',
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 
   async getSim(sid: string): Promise<Sim> {
     return this.request({
       method: 'GET',
-      path: `/Sims/${sid}`
+      path: `/Sims/${sid}`,
+      expectedStatus: [200]
     });
   }
 
@@ -171,7 +176,8 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'POST',
       path: `/Sims/${sid}`,
-      body: data
+      body: data as Record<string, unknown>,
+      expectedStatus: [200]
     });
   }
 
@@ -202,7 +208,8 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'GET',
       path: '/Commands',
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 
@@ -210,7 +217,7 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'POST',
       path: '/Commands',
-      body: data,
+      body: data as Record<string, unknown>,
       expectedStatus: [201, 200]
     });
   }
@@ -218,7 +225,8 @@ export class WirelessApi extends BaseApi {
   async getCommand(sid: string): Promise<Command> {
     return this.request({
       method: 'GET',
-      path: `/Commands/${sid}`
+      path: `/Commands/${sid}`,
+      expectedStatus: [200]
     });
   }
 
@@ -240,7 +248,8 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'GET',
       path: `/Sims/${sid}/DataSessions`,
-      params: queryParams
+      params: queryParams,
+      expectedStatus: [200]
     });
   }
 

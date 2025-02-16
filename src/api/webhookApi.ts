@@ -8,7 +8,7 @@ export class WebhookApi extends BaseApi {
   protected baseURL = 'https://webhook.api.korewireless.com';
 
   constructor(client: KoreClient) {
-    const rateLimiter = new RateLimiter(10); // Only pass maxRequests
+    const rateLimiter = new RateLimiter(10);
     super(client, rateLimiter);
   }
 
@@ -16,14 +16,32 @@ export class WebhookApi extends BaseApi {
    * Create a new secret
    */
   async createSecret(request: CreateSecretRequest): Promise<SecretCreated> {
-    return this.post<SecretCreated>('/secrets', request);
+    const body: Record<string, unknown> = {
+      Name: request.Name
+    };
+
+    return this.request({
+      method: 'POST',
+      path: '/secrets',
+      body,
+      expectedStatus: [201]
+    });
   }
 
   /**
    * Modify an existing secret
    */
   async modifySecret(id: string, request: ModifySecretRequest): Promise<SecretResponse> {
-    return this.patch<SecretResponse>(`/secrets/${id}`, request);
+    const body: Record<string, unknown> = {};
+    if (request.Name !== undefined) body.Name = request.Name;
+    if (request.Status !== undefined) body.Status = request.Status;
+
+    return this.request({
+      method: 'PATCH',
+      path: `/secrets/${id}`,
+      body,
+      expectedStatus: [200]
+    });
   }
 
   /**
@@ -34,6 +52,11 @@ export class WebhookApi extends BaseApi {
     if (pageSize) params.append('page_size', pageSize.toString());
     if (pageNumber) params.append('page_number', pageNumber.toString());
     
-    return this.get<PaginatedSecretResponse>('/secrets', params);
+    return this.request({
+      method: 'GET',
+      path: '/secrets',
+      params,
+      expectedStatus: [200]
+    });
   }
 } 

@@ -1,4 +1,4 @@
-import { PingResponse, ErrorResponse } from '../types/responses';
+import { PingResponse } from '../types/responses';
 import { BaseApi } from './baseApi';
 import { KoreClient } from './koreClient';
 import { RateLimiter } from '../utils/rateLimiter';

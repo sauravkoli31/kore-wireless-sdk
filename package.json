@@ -1,31 +1,56 @@
 {
-  "name": "kore-wireless-api-sdk",
+  "name": "kore-wireless-sdk",
   "version": "1.0.0",
-  "description": "NodeJS SDK for KORE Wireless API",
+  "description": "SDK for KORE Wireless APIs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
     "prepare": "npm run build"
   },
   "keywords": [
     "kore",
     "wireless",
-    "api",
+    "iot",
     "sdk",
-    "kore-wireless-api-sdk",
-    "kore-api-sdk",
-    "kore-wireless-sdk"
+    "api",
+    "korewireless",
+    "kore-wireless-sdk",
+    "kore-wireless-sdk-js",
+    "kore-wireless-sdk-typescript",
+    "kore-wireless-sdk-nodejs",
+    "kore-wireless-sdk-javascript",
+    "kore-wireless",
+    "kore-iot",
+    "kore-wireless-api"
   ],
-  "author": "Saurav Koli",
-  "email": "sauravkoli3105@gmail.com",
-  "homepage": "https://github.com/sauravkoli31/kore-wireless-sdk",
+  "author": "Saurav Koli <sauravkoli3105@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^20.11.24",
-    "typescript": "^5.3.3"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sauravkoli31/kore-wireless-sdk"
   },
   "dependencies": {
-    "dotenv": "^16.4.7"
+    "cross-fetch": "^3.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.20.0",
+    "jest": "^27.0.0",
+    "ts-jest": "^27.0.0",
+    "typescript": "^4.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

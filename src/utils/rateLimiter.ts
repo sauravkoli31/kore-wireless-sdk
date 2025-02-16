@@ -1,15 +1,31 @@
+/**
+ * Rate limiter to prevent API throttling
+ * @internal
+ */
 export class RateLimiter {
-  private queue: Array<() => Promise<any>> = [];
+  private queue: (() => Promise<void>)[] = [];
   private processing = false;
   private lastRequestTime = 0;
-  private minRequestInterval: number;
+  private readonly minInterval: number;
 
-  constructor(maxRequests: number) {
-    this.minRequestInterval = 1000 / maxRequests; // Convert requests/sec to ms between requests
+  /**
+   * Creates a new rate limiter
+   * @param requestsPerSecond - Maximum requests per second
+   */
+  constructor(requestsPerSecond: number) {
+    if (requestsPerSecond <= 0) {
+      throw new Error('requestsPerSecond must be greater than 0');
+    }
+    this.minInterval = 1000 / requestsPerSecond;
   }
 
+  /**
+   * Adds a function to the rate-limited queue
+   * @param fn - Function to execute
+   * @returns Promise that resolves with the function result
+   */
   async add<T>(fn: () => Promise<T>): Promise<T> {
-    return new Promise((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
       this.queue.push(async () => {
         try {
           const result = await fn();
@@ -18,26 +34,28 @@ export class RateLimiter {
           reject(error);
         }
       });
-      this.process();
+
+      if (!this.processing) {
+        this.processQueue();
+      }
     });
   }
 
-  private async process(): Promise<void> {
-    if (this.processing) return;
+  private async processQueue(): Promise<void> {
     this.processing = true;
-
+    
     while (this.queue.length > 0) {
       const now = Date.now();
-      const timeToWait = this.lastRequestTime + this.minRequestInterval - now;
+      const elapsed = now - this.lastRequestTime;
       
-      if (timeToWait > 0) {
-        await new Promise(resolve => setTimeout(resolve, timeToWait));
+      if (elapsed < this.minInterval) {
+        await new Promise(resolve => setTimeout(resolve, this.minInterval - elapsed));
       }
-
-      const fn = this.queue.shift();
-      if (fn) {
+      
+      const task = this.queue.shift();
+      if (task) {
         this.lastRequestTime = Date.now();
-        await fn();
+        await task();
       }
     }
 

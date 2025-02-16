@@ -6,7 +6,7 @@
  Install the SDK via npm:
 
  ```bash
- npm install kore-sdk
+ npm install kore-wireless-sdk
  ```
 
  ### Configuration

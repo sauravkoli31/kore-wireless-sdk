@@ -119,6 +119,7 @@ export interface RatePlan {
 }
 
 export interface CreateRatePlanRequest {
+  [key: string]: unknown;
   uniqueName?: string;
   friendlyName?: string;
   dataEnabled?: boolean;
@@ -180,6 +181,7 @@ export interface Command {
 }
 
 export interface CreateCommandRequest {
+  [key: string]: unknown;
   command: string;
   sim: string;
   callbackMethod?: 'GET' | 'POST';
@@ -214,16 +216,67 @@ export interface DataSession {
   imei?: string;
 }
 
+/**
+ * HTTP request options
+ * @internal
+ */
 export interface RequestOptions {
+  /** HTTP method */
   method: string;
+  /** Request path */
   path: string;
+  /** Base URL */
+  baseURL?: string;
+  /** Query parameters */
   params?: URLSearchParams;
-  body?: any;
-  expectedStatus?: number[];
+  /** Request body */
+  body?: Record<string, unknown>;
+  /** Expected response status codes */
+  expectedStatus: number[];
 }
 
 export interface ApiError extends Error {
   code: number;
   status: number;
   details?: string;
+}
+
+/**
+ * Custom headers for API requests
+ * @internal
+ */
+export interface CustomHeaders {
+  [key: string]: string | undefined;
+  'Content-Type'?: string;
+  'Authorization'?: string;
+  'Accept'?: string;
+}
+
+/**
+ * Request interceptor function type
+ * @internal
+ */
+export type RequestInterceptor = (
+  request: RequestOptions & { headers: CustomHeaders }
+) => Promise<RequestOptions & { headers: CustomHeaders }>;
+
+/**
+ * Response interceptor function type
+ * @internal
+ */
+export type ResponseInterceptor = (
+  response: Response,
+  requestOptions: RequestOptions
+) => Promise<Response>;
+
+// Update existing interfaces to include index signatures
+export interface CreateSecretRequest {
+  [key: string]: unknown;
+  Name: string;
+}
+
+export interface ModifySecretRequest {
+  [key: string]: unknown;
+  Name?: string;
+  Status?: 'active' | 'pending';
 } 
