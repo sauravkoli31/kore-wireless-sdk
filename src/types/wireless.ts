@@ -182,13 +182,13 @@ export interface Command {
 
 export interface CreateCommandRequest {
   [key: string]: unknown;
-  command: string;
-  sim: string;
-  callbackMethod?: 'GET' | 'POST';
-  callbackUrl?: string;
-  commandMode?: CommandMode;
-  includeSid?: 'none' | 'start' | 'end';
-  deliveryReceiptRequested?: boolean;
+  Command: string;
+  Sim?: string;
+  CallbackMethod?: 'GET' | 'POST';
+  CallbackUrl?: string;
+  CommandMode?: CommandMode;
+  IncludeSid?: 'none' | 'start' | 'end';
+  DeliveryReceiptRequested?: boolean;
 }
 
 // Data Sessions Types
@@ -233,6 +233,8 @@ export interface RequestOptions {
   body?: Record<string, unknown>;
   /** Expected response status codes */
   expectedStatus: number[];
+  /** Custom headers */
+  headers?: CustomHeaders;
 }
 
 export interface ApiError extends Error {

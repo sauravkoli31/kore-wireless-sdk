@@ -109,7 +109,10 @@ export class WirelessApi extends BaseApi {
       method: 'POST',
       path: '/RatePlans',
       body: data,
-      expectedStatus: [201, 200]
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      expectedStatus: [200, 202]
     });
   }
 
@@ -190,7 +193,11 @@ export class WirelessApi extends BaseApi {
   }
 
   // Commands API
-  async listCommands(params: {
+  /**
+   * Fetch Command(s) based on query parameters
+   * @param params - Query parameters (Sim, Status, Direction, Transport, pagination)
+   */
+  async getCommand(params: {
     sim?: string;
     status?: CommandStatus;
     direction?: CommandDirection;
@@ -218,15 +225,10 @@ export class WirelessApi extends BaseApi {
       method: 'POST',
       path: '/Commands',
       body: data as Record<string, unknown>,
-      expectedStatus: [201, 200]
-    });
-  }
-
-  async getCommand(sid: string): Promise<Command> {
-    return this.request({
-      method: 'GET',
-      path: `/Commands/${sid}`,
-      expectedStatus: [200]
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      expectedStatus: [201, 202]
     });
   }
 
@@ -234,7 +236,7 @@ export class WirelessApi extends BaseApi {
     return this.request({
       method: 'DELETE',
       path: `/Commands/${sid}`,
-      expectedStatus: [204]
+      expectedStatus: [202, 204]
     });
   }
 
