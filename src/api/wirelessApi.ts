@@ -14,6 +14,7 @@ import {
   CommandDirection,
   CommandTransport,
   RequestOptions,
+  UpdateSimRequest,
 } from '../types/wireless';
 import { BaseApi } from './baseApi';
 import { RateLimiter } from '../utils/rateLimiter';
@@ -175,12 +176,15 @@ export class WirelessApi extends BaseApi {
     });
   }
 
-  async updateSim(sid: string, data: Partial<Sim>): Promise<Sim> {
+  async updateSim(sid: string, data: Partial<UpdateSimRequest>): Promise<Sim> {
     return this.request({
       method: 'POST',
       path: `/Sims/${sid}`,
       body: data as Record<string, unknown>,
-      expectedStatus: [200]
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      expectedStatus: [200, 202]
     });
   }
 

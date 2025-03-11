@@ -142,7 +142,7 @@ export interface Sim {
   unique_name?: string;
   account_sid?: string;
   friendly_name?: string;
-  status?: SimStatus;
+  Status?: SimStatus;
   rate_plan_sid?: string;
   iccid?: string;
   eid?: string;
@@ -157,6 +157,28 @@ export interface Sim {
     data_sessions?: string;
   };
   url?: string;
+}
+
+export interface UpdateSimRequest {
+  [key: string]: unknown;
+  UniqueName?: string;
+  CallbackMethod?: 'GET' | 'POST';
+  CallbackUrl?: string;
+  FriendlyName?: string;
+  RatePlan?: string;
+  Status?: SimStatus;
+  CommandsCallbackMethod?: 'GET' | 'POST';
+  CommandsCallbackUrl?: string;
+  SmsFallbackMethod?: 'GET' | 'POST';
+  SmsFallbackUrl?: string;
+  SmsMethod?: 'GET' | 'POST';
+  SmsUrl?: string;
+  VoiceFallbackMethod?: 'GET' | 'POST';
+  VoiceFallbackUrl?: string;
+  VoiceMethod?: 'GET' | 'POST';
+  VoiceUrl?: string;
+  ResetStatus?: SimResetStatus;
+  AccountSid?: string;
 }
 
 // Commands Types
