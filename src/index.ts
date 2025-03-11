@@ -20,6 +20,7 @@ export type {
   Sim,
   SimStatus,
   RatePlan,
+  UpdateSimRequest,
   Command,
   DataSession,
   PaginationParams,
