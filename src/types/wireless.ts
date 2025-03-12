@@ -202,6 +202,16 @@ export interface Command {
   url?: string;
 }
 
+export interface Meta {
+  first_page_url: string;
+  key: string;
+  next_page_url: string | null;
+  page: number;
+  page_size: number;
+  previous_page_url: string | null;
+  url: string;
+}
+
 export interface CreateCommandRequest {
   [key: string]: unknown;
   Command: string;

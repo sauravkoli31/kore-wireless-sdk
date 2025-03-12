@@ -15,6 +15,7 @@ import {
   CommandTransport,
   RequestOptions,
   UpdateSimRequest,
+  Meta,
 } from '../types/wireless';
 import { BaseApi } from './baseApi';
 import { RateLimiter } from '../utils/rateLimiter';
@@ -95,7 +96,7 @@ export class WirelessApi extends BaseApi {
   }
 
   // Rate Plans API
-  async listRatePlans(params: PaginationParams = {}): Promise<{ rate_plans: RatePlan[]; meta: any }> {
+  async listRatePlans(params: PaginationParams = {}): Promise<{ rate_plans: RatePlan[]; meta: Meta }> {
     const queryParams = this.buildPaginationParams(params);
     return await this.request({
       method: 'GET',
@@ -149,7 +150,7 @@ export class WirelessApi extends BaseApi {
     ratePlan?: string;
     eId?: string;
     simRegistrationCode?: string;
-  } & PaginationParams = {}): Promise<{ sims: Sim[]; meta: any }> {
+  } & PaginationParams = {}): Promise<{ sims: Sim[]; meta: Meta }> {
     const queryParams = new URLSearchParams();
     if (params.status) queryParams.append('Status', params.status);
     if (params.iccid) queryParams.append('Iccid', params.iccid);
@@ -206,7 +207,7 @@ export class WirelessApi extends BaseApi {
     status?: CommandStatus;
     direction?: CommandDirection;
     transport?: CommandTransport;
-  } & PaginationParams = {}): Promise<{ commands: Command[]; meta: any }> {
+  } & PaginationParams = {}): Promise<{ commands: Command[]; meta: Meta }> {
     const queryParams = new URLSearchParams();
     if (params.sim) queryParams.append('Sim', params.sim);
     if (params.status) queryParams.append('Status', params.status);
@@ -230,7 +231,8 @@ export class WirelessApi extends BaseApi {
       path: '/Commands',
       body: data as Record<string, unknown>,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
       },
       expectedStatus: [201, 202]
     });
@@ -248,7 +250,7 @@ export class WirelessApi extends BaseApi {
   async getDataSessions(
     sid: string,
     params: PaginationParams = {}
-  ): Promise<{ data_sessions: DataSession[]; meta: any }> {
+  ): Promise<{ data_sessions: DataSession[]; meta: Meta }> {
     const queryParams = this.buildPaginationParams(params);
 
     return this.request({
